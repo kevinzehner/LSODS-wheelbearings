@@ -1,0 +1,3 @@
+altgraph
+macholib
+PySide6

@@ -1,0 +1,228 @@
+* {
+    font-size: 14px;
+}
+
+/* QMainWindow background */
+QMainWindow {
+    background-color: #FFFFFF;  /* White background */
+}
+
+/* General widget styling */
+QWidget {
+    background-color: #FFFFFF;  /* White background for all widgets */
+    color: #000000;  /* Black text for all widgets */
+    font-family: Arial, sans-serif;
+}
+
+QWidget.combos {
+    background-color:  #E74C3C;
+    border-radius: 4px;
+}
+
+QWidget.ComboWidget {
+    background-color: #F0F0F0;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+QWidget.LabelWidget {
+    background-color: #FFF;
+    border: 1px solid black;
+    border-right: 1px solid transparent;
+    border-radius: 8px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    padding: 10px;
+}
+
+QWidget.ComboWidget QLabel {
+    background-color: transparent;
+    font-weight: bold;
+}
+
+QLabel {
+    color: #000000;  /* Black text */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 0px;
+}
+
+/* QComboBox styling */
+QWidget.ComboWidget QComboBox {
+    color: #000000;  /* Black text */
+    font-family: Arial, sans-serif;
+    background-color: transparent;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #F0F0F0;  /* Background color of the dropdown list */
+    color: #000000;  /* Text color of the dropdown list */
+    selection-background-color: #E74C3C;  /* Background color of selected item */
+    selection-color: #FFFFFF;  /* Text color of selected item */
+}
+
+QComboBox QAbstractItemView::item {
+    padding: 3px 4px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #C0392B;  /* Background color when hovered */
+    color: #FFFFFF;  /* Text color when hovered */
+}
+
+/* PartWidget styling */
+QWidget.PartWidget {
+    background-color: #f0f0f0;
+    border: 1px solid #BDC3C7;
+    padding: 10px;
+    border-radius: 10px;  /* Rounded corners */
+}
+
+QWidget.PartWidget QLabel {
+    background-color: transparent;
+    color: #000;  /* Black text */
+    font-size: 20px;  /* Bigger font size for Part Number and Fuel Type */
+    padding: 10px;
+    border-radius: 10px;  /* Rounded corners */
+    text-align: center;  /* Center align text */
+    font-family: Arial, sans-serif;
+}
+
+.footer {
+    font-size: 12pt;
+}
+
+/* QPushButton styling */
+QPushButton {
+    background-color: #850000;  /* Red background */
+    color: #FFFFFF;  /* White text */
+    border: 1px solid #BDC3C7;  /* Light gray border */
+    border-radius: 8px;
+    font-weight: bold;
+    padding: 15px 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+QPushButton:hover {
+    background-color: #C0392B;  /* Darker red background on hover */
+    border: 1px solid #BDC3C7;  /* Ensure the border is still visible on hover */
+}
+
+/* QScrollArea styling */
+QScrollArea {
+    border: none;
+    background-color: #E74C3C;  /* Red background */
+    border-radius: 8px;
+}
+
+QScrollArea > QWidget {
+    background-color: #E74C3C;  /* Red background for inner widgets */
+    color: #000000;  /* Ensure text color is black for inner widgets */
+}
+
+QScrollArea > QWidget > QWidget {
+    background-color: #C0392B;  /* Red background for inner widgets */
+    color: #000000;  /* Ensure text color is black for inner widgets */
+}
+
+/* Specific widget types within QScrollArea */
+QScrollArea QLabel {
+    color: #000000;  /* Black text for labels within QScrollArea */
+}
+
+QWidget.RightSide {
+    border-radius: 8px;
+}
+
+QScrollArea QWidget {
+    border-radius: 8px;
+}
+
+QScrollArea QPushButton {
+    background-color: #E74C3C;  /* Red background for buttons within QScrollArea */
+    color: #FFFFFF;  /* White text */
+}
+
+QLabel#bottomImageLabel {
+    border: 1px solid #BDC3C7;  /* Light gray border around the bottom image */
+    border-radius: 10px;  /* Rounded corners for the bottom image */
+    padding: 10px;  /* Padding around the bottom image */
+}
+
+QLabel.Instructions {
+    font-size: 13pt;
+}
+
+/* Result card styling */
+QWidget#resultCard {
+    background-color: #FFFFFF;  /* White background for result cards */
+    border: 1px solid #BDC3C7;  /* Light gray border */
+    border-radius: 10px;  /* Rounded corners */
+    padding: 10px;  /* Padding inside the card */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+QLabel#resultCardLabel {
+    font-size: 20px;
+    padding: 5px;
+}
+
+QLabel#resultCardImage {
+    border: 1px solid #BDC3C7;  /* Light gray border around images in result cards */
+    border-radius: 10px;  /* Rounded corners for images */
+}
+
+/* QScrollBar styling */
+QScrollBar:vertical {
+    border: none;
+    background: #E74C3C; /* Red background for scrollbar track */
+    width: 14px; /* Adjust the width of the scrollbar */
+    margin: 15px 3px 15px 3px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #BDC3C7; /* Light gray color for scrollbar handle */
+    min-height: 20px;
+    border-radius: 7px; /* Rounded scrollbar handle */
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    background: none;
+    height: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+/* Adjust horizontal scrollbar as well if needed */
+QScrollBar:horizontal {
+    border: none;
+    background: #E74C3C; /* Red background for scrollbar track */
+    height: 14px; /* Adjust the height of the scrollbar */
+    margin: 3px 15px 3px 15px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #BDC3C7; /* Light gray color for scrollbar handle */
+    min-width: 20px;
+    border-radius: 7px; /* Rounded scrollbar handle */
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    background: none;
+    width: 0px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
