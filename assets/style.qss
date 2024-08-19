@@ -15,7 +15,8 @@ QWidget {
 }
 
 QWidget.combos {
-    background-color:  #E74C3C;
+    background-color:  #233074;
+    color: white;;
     border-radius: 4px;
 }
 
@@ -59,7 +60,8 @@ QWidget.ComboWidget QComboBox {
 QComboBox QAbstractItemView {
     background-color: #F0F0F0;  /* Background color of the dropdown list */
     color: #000000;  /* Text color of the dropdown list */
-    selection-background-color: #E74C3C;  /* Background color of selected item */
+    selection-background-color: #233074;
+    color: white;;  /* Background color of selected item */
     selection-color: #FFFFFF;  /* Text color of selected item */
 }
 
@@ -68,7 +70,8 @@ QComboBox QAbstractItemView::item {
 }
 
 QComboBox QAbstractItemView::item:hover {
-    background-color: #C0392B;  /* Background color when hovered */
+    background-color: #233074;
+    color: white;;  /* Background color when hovered */
     color: #FFFFFF;  /* Text color when hovered */
 }
 
@@ -114,12 +117,14 @@ QPushButton:hover {
 /* QScrollArea styling */
 QScrollArea {
     border: none;
-    background-color: #E74C3C;  /* Red background */
+    background-color: #233074;
+    color: white;;  /* Red background */
     border-radius: 8px;
 }
 
 QScrollArea > QWidget {
-    background-color: #E74C3C;  /* Red background for inner widgets */
+    background-color: #233074;
+    color: white;C;  /* Red background for inner widgets */
     color: #000000;  /* Ensure text color is black for inner widgets */
 }
 

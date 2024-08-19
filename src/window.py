@@ -95,9 +95,7 @@ class LeftSide(QWidget):
         self.logolabel = QLabel()
         self.logolabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.logolabel.setPixmap(
-            QPixmap(":logo.jpg").scaledToHeight(
-                150, Qt.TransformationMode.SmoothTransformation
-            )
+            QPixmap(":title.jpg").scaledToHeight(150, Qt.TransformationMode.SmoothTransformation)
         )
         self.logolabel.setProperty("class", "Logo")
 
@@ -149,7 +147,7 @@ class LeftSide(QWidget):
                 300, Qt.TransformationMode.SmoothTransformation
             )
         )
-        self.bottom_image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.bottom_image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.bottom_image_label)
         layout.addWidget(self.footer)
 
@@ -386,7 +384,7 @@ class PartWidget(QWidget):
         if mod_ind:
             self.image_path = str(ASSETS / "boots-images" / mod_ind)
         else:
-            self.image_path = ":logo.jpg"
+            self.image_path = ":title.jpg"
         pixmap = QPixmap(self.image_path)
         self.image_label.setPixmap(
             pixmap.scaledToHeight(200, Qt.TransformationMode.SmoothTransformation)
@@ -508,7 +506,7 @@ class Window(QMainWindow):
     def resizeEvent(self, event):
         # Resizing logic for the LeftSide's logo
         self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.20)
-        pixmap = QPixmap(":logo.jpg")
+        pixmap = QPixmap(":title.jpg")
         pixmap = pixmap.copy(pixmap.rect().adjusted(10, 10, -10, -10))
         self.left_side.logolabel.setPixmap(
             pixmap.scaledToHeight(
