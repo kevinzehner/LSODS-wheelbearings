@@ -19,10 +19,13 @@ import sqlite3
 # The other functions are called from `ui_logic.py` to populate subsequent dropdowns based on user selections.
 
 
+import sqlite3
+
+
 def get_unique_manufacturers(db_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("SELECT DISTINCT Manuf FROM boots ORDER BY Manuf ASC")
+    cursor.execute("SELECT DISTINCT Manuf FROM wheelbearing_LSODS ORDER BY Manuf ASC")
     manufacturers = [row[0] for row in cursor.fetchall()]
     conn.close()
     return manufacturers
@@ -32,7 +35,7 @@ def get_models(db_path, manufacturer):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT Model FROM boots WHERE Manuf = ? ORDER BY Model ASC",
+        "SELECT DISTINCT Model FROM wheelbearing_LSODS WHERE Manuf = ? ORDER BY Model ASC",
         (manufacturer,),
     )
     models = [row[0] for row in cursor.fetchall()]
@@ -44,7 +47,7 @@ def get_engine_sizes(db_path, manufacturer, model):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT EngineSize FROM boots WHERE Manuf = ? AND Model = ? ORDER BY EngineSize ASC",
+        "SELECT DISTINCT EngineSize FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? ORDER BY EngineSize ASC",
         (manufacturer, model),
     )
     engine_sizes = [str(row[0]) for row in cursor.fetchall()]
@@ -56,7 +59,7 @@ def get_mark_series(db_path, manufacturer, model, engine_size):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT MarkSeries FROM boots WHERE Manuf = ? AND Model = ? AND EngineSize = ? ORDER BY MarkSeries ASC",
+        "SELECT DISTINCT mark_series FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? ORDER BY mark_series ASC",
         (manufacturer, model, engine_size),
     )
     mark_series = [row[0] for row in cursor.fetchall()]
@@ -68,7 +71,7 @@ def get_drive_types(db_path, manufacturer, model, engine_size, mark_series):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT TransDrive FROM boots WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? ORDER BY TransDrive ASC",
+        "SELECT DISTINCT TRWDansDRWDive FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? ORDER BY TRWDansDRWDive ASC",
         (manufacturer, model, engine_size, mark_series),
     )
     drive_types = [row[0] for row in cursor.fetchall()]
@@ -80,7 +83,7 @@ def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT DISTINCT MPos FROM boots WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TransDrive = ? ORDER BY MPos ASC",
+        "SELECT DISTINCT Mpos FROM wheelbearing_LSODS WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND mark_series = ? AND TRWDansDRWDive = ? ORDER BY Mpos ASC",
         (manufacturer, model, engine_size, mark_series, drive_type),
     )
     positions = [row[0] for row in cursor.fetchall()]
@@ -88,25 +91,11 @@ def get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_
     return positions
 
 
-def get_transmissions(
-    db_path, manufacturer, model, engine_size, mark_series, drive_type, position
-):
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT DISTINCT Transmission FROM boots WHERE Manuf = ? AND Model = ? AND EngineSize = ? AND MarkSeries = ? AND TransDrive = ? AND MPos = ? ORDER BY Transmission ASC",
-        (manufacturer, model, engine_size, mark_series, drive_type, position),
-    )
-    transmissions = [row[0] for row in cursor.fetchall()]
-    conn.close()
-    return transmissions
-
-
 def get_parts(db_path, criteria):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = "SELECT DISTINCT PartNumber, PartSize, ModInd, FuelType FROM boots WHERE Manuf = ?"
+    query = "SELECT DISTINCT PartNumber, PartSize, ModInd, FuelType FROM wheelbearing_LSODS WHERE Manuf = ?"
     params = [criteria["manufacturer"]]
 
     if criteria["model"]:
@@ -116,17 +105,14 @@ def get_parts(db_path, criteria):
         query += " AND EngineSize = ?"
         params.append(criteria["engine_size"])
     if criteria["mark_series"]:
-        query += " AND MarkSeries = ?"
+        query += " AND mark_series = ?"
         params.append(criteria["mark_series"])
     if criteria["drive_type"]:
-        query += " AND TransDrive = ?"
+        query += " AND TRWDansDRWDive = ?"
         params.append(criteria["drive_type"])
     if criteria["position"]:
-        query += " AND MPos = ?"
+        query += " AND Mpos = ?"
         params.append(criteria["position"])
-    if criteria["transmission"]:
-        query += " AND Transmission = ?"
-        params.append(criteria["transmission"])
 
     query += " ORDER BY PartNumber ASC"
 
