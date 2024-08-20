@@ -113,15 +113,10 @@ def get_parts(db_path, criteria):
     if criteria["position"]:
         query += " AND MPos = ?"
         params.append(criteria["position"])
-    if criteria["transmission"]:
-        query += " AND Transmission = ?"
-        params.append(criteria["transmission"])
 
     query += " ORDER BY LSODS_PartNumber ASC"
 
     cursor.execute(query, params)
     parts = cursor.fetchall()
     conn.close()
-    return parts
-
     return parts

@@ -290,13 +290,14 @@ class LeftSide(QWidget):
         self.clearResults.emit()
 
     def search_parts(self):
-        """Searches for parts based on selected criteria and displays the results. The if else statements are used to check that the current text is not the placeholder text."""
+        """Searches for parts based on selected criteria and displays the results."""
         manufacturer = self.manufacturerCombo.currentText()
         model = self.modelCombo.currentText()
         engine_size = self.engineSizeCombo.currentText()
         mark_series = self.markSeriesCombo.currentText()
         drive_type = self.driveTypeCombo.currentText()
         position = self.positionCombo.currentText()
+        transmission = self.transmissionCombo.currentText()
 
         criteria = {
             "manufacturer": (manufacturer if manufacturer else None),
@@ -305,6 +306,7 @@ class LeftSide(QWidget):
             "mark_series": mark_series if mark_series else None,
             "drive_type": drive_type if drive_type else None,
             "position": position if position else None,
+            "transmission": transmission if transmission else None,
         }
         parts = database.get_parts(DB_PATH, criteria)
         self.displayResults.emit(parts)
