@@ -104,7 +104,7 @@ class LeftSide(QWidget):
         self.instructions_label = QLabel()
         self.instructions_label.setText(
             "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
-            "drive type, position, and transmission to search for CV Boots.</p></body></html>"
+            "drive type, and position to search for CV Boots.</p></body></html>"
         )
         self.instructions_label.setProperty("class", "Instructions")
         self.instructions_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -297,7 +297,6 @@ class LeftSide(QWidget):
         mark_series = self.markSeriesCombo.currentText()
         drive_type = self.driveTypeCombo.currentText()
         position = self.positionCombo.currentText()
-        transmission = self.transmissionCombo.currentText()
 
         criteria = {
             "manufacturer": (manufacturer if manufacturer else None),
@@ -306,14 +305,13 @@ class LeftSide(QWidget):
             "mark_series": mark_series if mark_series else None,
             "drive_type": drive_type if drive_type else None,
             "position": position if position else None,
-            "transmission": transmission if transmission else None,
         }
         parts = database.get_parts(DB_PATH, criteria)
         self.displayResults.emit(parts)
 
 
 class PartWidget(QWidget):
-    def __init__(self, part_number, part_size, mod_ind, fuel_type, parent=None):
+    def __init__(self, part_number, part_size, jpeg, parent=None):
         super().__init__(parent=parent)
         self.setProperty("class", "PartWidget")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
@@ -341,20 +339,14 @@ class PartWidget(QWidget):
         part_size_label.setWordWrap(True)
         label_layout.addWidget(part_size_label)
 
-        # Fuel Type
-        fuel_type_label = QLabel(f" {fuel_type}")
-        fuel_type_label.setAlignment(Qt.AlignCenter)
-        fuel_type_label.setStyleSheet("font-size: 20px; padding: 5px;")
-        label_layout.addWidget(fuel_type_label)
-
         label_layout.addStretch(1)
         label_layout.setSpacing(2)
         part_layout.addLayout(label_layout, stretch=1)  # Give more space to text layout
 
         # Image handling
         self.image_label = QLabel()
-        if mod_ind:
-            self.image_path = str(ASSETS / "boots-images" / mod_ind)
+        if jpeg:
+            self.image_path = str(ASSETS / "wheelbearing-img2" / jpeg)
         else:
             self.image_path = ":title.jpg"
         pixmap = QPixmap(self.image_path)
@@ -369,24 +361,6 @@ class PartWidget(QWidget):
             self.image_label, stretch=1
         )  # Equal space for image layout
         self.resize_part()
-
-    def resize_part(self):
-        # Dynamically adjust the size of the widget
-        w = self._parent.scroll.viewport().width()
-        self.setFixedSize(w - 20, 250)  # Ensure a consistent width with padding
-        pixmap = QPixmap(self.image_path).scaledToHeight(
-            200, Qt.TransformationMode.SmoothTransformation
-        )
-        self.image_label.setPixmap(pixmap)
-
-    def resize_part(self):
-        # Dynamically adjust the size of the widget
-        w = self._parent.scroll.viewport().width()
-        self.setFixedSize(w - 20, 250)  # Ensure a consistent width with padding
-        pixmap = QPixmap(self.image_path).scaledToHeight(
-            200, Qt.TransformationMode.SmoothTransformation
-        )
-        self.image_label.setPixmap(pixmap)
 
     def resize_part(self):
         # Dynamically adjust the size of the widget
@@ -449,10 +423,8 @@ class RightSide(QWidget):
         self.clear_results()
         self.part_widgets = []
         for part in parts:
-            part_number, part_size, mod_ind, fuelType = part
-            part_widget = PartWidget(
-                part_number, part_size, mod_ind, fuelType, parent=self
-            )
+            part_number, part_size, jpeg = part
+            part_widget = PartWidget(part_number, part_size, jpeg, parent=self)
             self.layout.addWidget(part_widget, alignment=Qt.AlignTop | Qt.AlignLeft)
             self.part_widgets.append(part_widget)
 

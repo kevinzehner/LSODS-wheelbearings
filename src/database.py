@@ -95,7 +95,7 @@ def get_parts(db_path, criteria):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = "SELECT DISTINCT LSODS_PartNumber, Bearing_1_Size, jpeg, FuelType FROM wheelbearing_LSODS WHERE Manuf = ?"
+    query = "SELECT DISTINCT LSODS_PartNumber, Bearing_1_Size, jpeg FROM wheelbearing_LSODS WHERE Manuf = ?"
     params = [criteria["manufacturer"]]
 
     if criteria["model"]:
