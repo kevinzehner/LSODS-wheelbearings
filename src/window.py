@@ -95,7 +95,9 @@ class LeftSide(QWidget):
         self.logolabel = QLabel()
         self.logolabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.logolabel.setPixmap(
-            QPixmap(":title.jpg").scaledToHeight(150, Qt.TransformationMode.SmoothTransformation)
+            QPixmap(":title.jpg").scaledToHeight(
+                150, Qt.TransformationMode.SmoothTransformation
+            )
         )
         self.logolabel.setProperty("class", "Logo")
 
@@ -120,7 +122,6 @@ class LeftSide(QWidget):
         self.markSeriesCombo = ComboWidget("Mark Series", self)
         self.driveTypeCombo = ComboWidget("Drive Type", self)
         self.positionCombo = ComboWidget("Position", self)
-        self.transmissionCombo = ComboWidget("Transmission", self)
 
         grid.addWidget(self.manufacturerCombo, 0, 0)
         grid.addWidget(self.modelCombo, 0, 1)
@@ -128,7 +129,6 @@ class LeftSide(QWidget):
         grid.addWidget(self.markSeriesCombo, 1, 1)
         grid.addWidget(self.driveTypeCombo, 2, 0)
         grid.addWidget(self.positionCombo, 2, 1)
-        grid.addWidget(self.transmissionCombo, 3, 0)
 
         hlayout = QHBoxLayout()
         self.searchButton = QPushButton("Search")
@@ -166,7 +166,6 @@ class LeftSide(QWidget):
         self.engineSizeCombo.currentTextChanged.connect(self.update_mark_series)
         self.markSeriesCombo.currentTextChanged.connect(self.update_drive_types)
         self.driveTypeCombo.currentTextChanged.connect(self.update_positions)
-        self.positionCombo.currentTextChanged.connect(self.update_transmissions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
@@ -262,29 +261,6 @@ class LeftSide(QWidget):
             selected_drive_type,
         )
         self.positionCombo.addItems(positions)
-        self.update_transmissions()
-
-    def update_transmissions(self):
-        """Updates the transmission combo box based on the selected position."""
-        self.clear_combo_box(self.transmissionCombo, "")
-        selected_manufacturer = self.manufacturerCombo.currentText()
-        selected_model = self.modelCombo.currentText()
-        selected_engine_size = self.engineSizeCombo.currentText()
-        selected_mark_series = self.markSeriesCombo.currentText()
-        selected_drive_type = self.driveTypeCombo.currentText()
-        selected_position = self.positionCombo.currentText()
-        if selected_position == "":
-            return
-        transmissions = database.get_transmissions(
-            DB_PATH,
-            selected_manufacturer,
-            selected_model,
-            selected_engine_size,
-            selected_mark_series,
-            selected_drive_type,
-            selected_position,
-        )
-        self.transmissionCombo.addItems(transmissions)
 
     def clear_combo_box(self, combo_box, placeholder):
         """Clears the given combo box and sets a placeholder item."""
@@ -305,8 +281,6 @@ class LeftSide(QWidget):
             self.clear_combo_box(self.driveTypeCombo, "")
         if "position" not in except_boxes:
             self.clear_combo_box(self.positionCombo, "")
-        if "transmission" not in except_boxes:
-            self.clear_combo_box(self.transmissionCombo, "")
 
     def reset_dropdowns(self):
         """Resets all dropdowns to their initial state and repopulates manufacturers."""
@@ -323,7 +297,6 @@ class LeftSide(QWidget):
         mark_series = self.markSeriesCombo.currentText()
         drive_type = self.driveTypeCombo.currentText()
         position = self.positionCombo.currentText()
-        transmission = self.transmissionCombo.currentText()
 
         criteria = {
             "manufacturer": (manufacturer if manufacturer else None),
@@ -332,9 +305,6 @@ class LeftSide(QWidget):
             "mark_series": mark_series if mark_series else None,
             "drive_type": drive_type if drive_type else None,
             "position": position if position else None,
-            "transmission": (
-                transmission if transmission else None
-            ),  # Add new criteria
         }
         parts = database.get_parts(DB_PATH, criteria)
         self.displayResults.emit(parts)
