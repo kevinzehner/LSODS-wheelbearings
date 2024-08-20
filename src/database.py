@@ -95,7 +95,7 @@ def get_parts(db_path, criteria):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    query = "SELECT DISTINCT PartNumber, PartSize, jpeg, FuelType FROM wheelbearing_LSODS WHERE Manuf = ?"
+    query = "SELECT DISTINCT LSODS_PartNumber, Bearing_1_Size, jpeg, FuelType FROM wheelbearing_LSODS WHERE Manuf = ?"
     params = [criteria["manufacturer"]]
 
     if criteria["model"]:
@@ -111,12 +111,17 @@ def get_parts(db_path, criteria):
         query += " AND TRWDansDRWDive = ?"
         params.append(criteria["drive_type"])
     if criteria["position"]:
-        query += " AND Mpos = ?"
+        query += " AND MPos = ?"
         params.append(criteria["position"])
+    if criteria["transmission"]:
+        query += " AND Transmission = ?"
+        params.append(criteria["transmission"])
 
-    query += " ORDER BY PartNumber ASC"
+    query += " ORDER BY LSODS_PartNumber ASC"
 
     cursor.execute(query, params)
     parts = cursor.fetchall()
     conn.close()
+    return parts
+
     return parts
