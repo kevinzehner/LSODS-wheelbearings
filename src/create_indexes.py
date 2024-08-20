@@ -17,9 +17,6 @@ def create_indexes(db_path):
         "CREATE INDEX IF NOT EXISTS idx_drive_type ON wheelbearing_LSODS (TRWDansDRWDive)"
     )
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_mpos ON wheelbearing_LSODS (Mpos)")
-    cursor.execute(
-        "CREATE INDEX IF NOT EXISTS idx_transmission ON wheelbearing_LSODS (Transmission)"
-    )
 
     conn.commit()
     conn.close()
