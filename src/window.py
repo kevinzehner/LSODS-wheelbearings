@@ -18,7 +18,7 @@ else:
 
 
 ASSETS = APPDIR / "assets"
-DB_PATH = APPDIR / "boots.db"
+DB_PATH = APPDIR / "wheelbearings_LSODS.db"  # Updated to the new database
 
 
 class ComboWidget(QWidget):
