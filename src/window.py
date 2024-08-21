@@ -311,7 +311,7 @@ class LeftSide(QWidget):
 
 
 class PartWidget(QWidget):
-    def __init__(self, part_number, part_size, jpeg, parent=None):
+    def __init__(self, part_number, part_size, parent=None):
         super().__init__(parent=parent)
         self.setProperty("class", "PartWidget")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
@@ -345,11 +345,31 @@ class PartWidget(QWidget):
 
         # Image handling
         self.image_label = QLabel()
-        if jpeg:
-            self.image_path = str(ASSETS / "wheelbearing-img2" / jpeg)
+        if part_number:
+            # Construct the image path using part_number and .png extension
+            image_filename = f"{part_number}.png"
+            self.image_path = str(ASSETS / "wheelbearing_images_LSODS" / image_filename)
+            print(f"[DEBUG] Image path set to: {self.image_path}")  # Debugging line
+            print(
+                f"[DEBUG] Checking if file exists: {os.path.exists(self.image_path)}"
+            )  # Check existence
         else:
             self.image_path = ":title.jpg"
+            print(
+                f"[DEBUG] Default image path used: {self.image_path}"
+            )  # Debugging line
+
+        # Load the image and set it to the QLabel
         pixmap = QPixmap(self.image_path)
+        if pixmap.isNull():
+            print(
+                f"[ERROR] Failed to load image at path: {self.image_path}"
+            )  # Error line
+        else:
+            print(
+                f"[DEBUG] Successfully loaded image: {self.image_path}"
+            )  # Success line
+
         self.image_label.setPixmap(
             pixmap.scaledToHeight(200, Qt.TransformationMode.SmoothTransformation)
         )
@@ -369,6 +389,14 @@ class PartWidget(QWidget):
         pixmap = QPixmap(self.image_path).scaledToHeight(
             200, Qt.TransformationMode.SmoothTransformation
         )
+        if pixmap.isNull():
+            print(
+                f"[ERROR] Failed to reload image at path: {self.image_path}"
+            )  # Error line
+        else:
+            print(
+                f"[DEBUG] Resizing and setting image: {self.image_path}"
+            )  # Success line
         self.image_label.setPixmap(pixmap)
 
 
@@ -423,8 +451,11 @@ class RightSide(QWidget):
         self.clear_results()
         self.part_widgets = []
         for part in parts:
-            part_number, part_size, jpeg = part
-            part_widget = PartWidget(part_number, part_size, jpeg, parent=self)
+            (
+                part_number,
+                part_size,
+            ) = part
+            part_widget = PartWidget(part_number, part_size, parent=self)
             self.layout.addWidget(part_widget, alignment=Qt.AlignTop | Qt.AlignLeft)
             self.part_widgets.append(part_widget)
 
