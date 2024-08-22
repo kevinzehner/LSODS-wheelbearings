@@ -18,7 +18,7 @@ else:
 
 
 ASSETS = APPDIR / "assets"
-DB_PATH = APPDIR / "boots.db"
+DB_PATH = APPDIR / "wheelbearings_LSODS.db"  # Updated to the new database
 
 
 class ComboWidget(QWidget):
@@ -95,7 +95,7 @@ class LeftSide(QWidget):
         self.logolabel = QLabel()
         self.logolabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.logolabel.setPixmap(
-            QPixmap(":logo.jpg").scaledToHeight(
+            QPixmap(":title.jpg").scaledToHeight(
                 150, Qt.TransformationMode.SmoothTransformation
             )
         )
@@ -104,7 +104,7 @@ class LeftSide(QWidget):
         self.instructions_label = QLabel()
         self.instructions_label.setText(
             "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
-            "drive type, position, and transmission to search for CV Boots.</p></body></html>"
+            "drive type, and position to search for CV Boots.</p></body></html>"
         )
         self.instructions_label.setProperty("class", "Instructions")
         self.instructions_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -122,7 +122,6 @@ class LeftSide(QWidget):
         self.markSeriesCombo = ComboWidget("Mark Series", self)
         self.driveTypeCombo = ComboWidget("Drive Type", self)
         self.positionCombo = ComboWidget("Position", self)
-        self.transmissionCombo = ComboWidget("Transmission", self)
 
         grid.addWidget(self.manufacturerCombo, 0, 0)
         grid.addWidget(self.modelCombo, 0, 1)
@@ -130,7 +129,6 @@ class LeftSide(QWidget):
         grid.addWidget(self.markSeriesCombo, 1, 1)
         grid.addWidget(self.driveTypeCombo, 2, 0)
         grid.addWidget(self.positionCombo, 2, 1)
-        grid.addWidget(self.transmissionCombo, 3, 0)
 
         hlayout = QHBoxLayout()
         self.searchButton = QPushButton("Search")
@@ -145,11 +143,11 @@ class LeftSide(QWidget):
 
         self.bottom_image_label = QLabel()
         self.bottom_image_label.setPixmap(
-            QPixmap(":boots-main-img.jpg").scaledToHeight(
+            QPixmap(":main.JPG").scaledToHeight(
                 300, Qt.TransformationMode.SmoothTransformation
             )
         )
-        self.bottom_image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.bottom_image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(self.bottom_image_label)
         layout.addWidget(self.footer)
 
@@ -168,7 +166,6 @@ class LeftSide(QWidget):
         self.engineSizeCombo.currentTextChanged.connect(self.update_mark_series)
         self.markSeriesCombo.currentTextChanged.connect(self.update_drive_types)
         self.driveTypeCombo.currentTextChanged.connect(self.update_positions)
-        self.positionCombo.currentTextChanged.connect(self.update_transmissions)
         self.searchButton.clicked.connect(self.search_parts)
         self.resetButton.clicked.connect(self.reset_dropdowns)
 
@@ -264,29 +261,6 @@ class LeftSide(QWidget):
             selected_drive_type,
         )
         self.positionCombo.addItems(positions)
-        self.update_transmissions()
-
-    def update_transmissions(self):
-        """Updates the transmission combo box based on the selected position."""
-        self.clear_combo_box(self.transmissionCombo, "")
-        selected_manufacturer = self.manufacturerCombo.currentText()
-        selected_model = self.modelCombo.currentText()
-        selected_engine_size = self.engineSizeCombo.currentText()
-        selected_mark_series = self.markSeriesCombo.currentText()
-        selected_drive_type = self.driveTypeCombo.currentText()
-        selected_position = self.positionCombo.currentText()
-        if selected_position == "":
-            return
-        transmissions = database.get_transmissions(
-            DB_PATH,
-            selected_manufacturer,
-            selected_model,
-            selected_engine_size,
-            selected_mark_series,
-            selected_drive_type,
-            selected_position,
-        )
-        self.transmissionCombo.addItems(transmissions)
 
     def clear_combo_box(self, combo_box, placeholder):
         """Clears the given combo box and sets a placeholder item."""
@@ -307,8 +281,6 @@ class LeftSide(QWidget):
             self.clear_combo_box(self.driveTypeCombo, "")
         if "position" not in except_boxes:
             self.clear_combo_box(self.positionCombo, "")
-        if "transmission" not in except_boxes:
-            self.clear_combo_box(self.transmissionCombo, "")
 
     def reset_dropdowns(self):
         """Resets all dropdowns to their initial state and repopulates manufacturers."""
@@ -318,14 +290,13 @@ class LeftSide(QWidget):
         self.clearResults.emit()
 
     def search_parts(self):
-        """Searches for parts based on selected criteria and displays the results. The if else statements are used to check that the current text is not the placeholder text."""
+        """Searches for parts based on selected criteria and displays the results."""
         manufacturer = self.manufacturerCombo.currentText()
         model = self.modelCombo.currentText()
         engine_size = self.engineSizeCombo.currentText()
         mark_series = self.markSeriesCombo.currentText()
         drive_type = self.driveTypeCombo.currentText()
         position = self.positionCombo.currentText()
-        transmission = self.transmissionCombo.currentText()
 
         criteria = {
             "manufacturer": (manufacturer if manufacturer else None),
@@ -334,16 +305,13 @@ class LeftSide(QWidget):
             "mark_series": mark_series if mark_series else None,
             "drive_type": drive_type if drive_type else None,
             "position": position if position else None,
-            "transmission": (
-                transmission if transmission else None
-            ),  # Add new criteria
         }
         parts = database.get_parts(DB_PATH, criteria)
         self.displayResults.emit(parts)
 
 
 class PartWidget(QWidget):
-    def __init__(self, part_number, part_size, mod_ind, fuel_type, parent=None):
+    def __init__(self, part_number, part_size, parent=None):
         super().__init__(parent=parent)
         self.setProperty("class", "PartWidget")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
@@ -371,23 +339,37 @@ class PartWidget(QWidget):
         part_size_label.setWordWrap(True)
         label_layout.addWidget(part_size_label)
 
-        # Fuel Type
-        fuel_type_label = QLabel(f" {fuel_type}")
-        fuel_type_label.setAlignment(Qt.AlignCenter)
-        fuel_type_label.setStyleSheet("font-size: 20px; padding: 5px;")
-        label_layout.addWidget(fuel_type_label)
-
         label_layout.addStretch(1)
         label_layout.setSpacing(2)
         part_layout.addLayout(label_layout, stretch=1)  # Give more space to text layout
 
         # Image handling
         self.image_label = QLabel()
-        if mod_ind:
-            self.image_path = str(ASSETS / "boots-images" / mod_ind)
+        if part_number:
+            # Construct the image path using part_number and .png extension
+            image_filename = f"{part_number}.png"
+            self.image_path = str(ASSETS / "wheelbearing_images_LSODS" / image_filename)
+            print(f"[DEBUG] Image path set to: {self.image_path}")  # Debugging line
+            print(
+                f"[DEBUG] Checking if file exists: {os.path.exists(self.image_path)}"
+            )  # Check existence
         else:
-            self.image_path = ":logo.jpg"
+            self.image_path = ":title.jpg"
+            print(
+                f"[DEBUG] Default image path used: {self.image_path}"
+            )  # Debugging line
+
+        # Load the image and set it to the QLabel
         pixmap = QPixmap(self.image_path)
+        if pixmap.isNull():
+            print(
+                f"[ERROR] Failed to load image at path: {self.image_path}"
+            )  # Error line
+        else:
+            print(
+                f"[DEBUG] Successfully loaded image: {self.image_path}"
+            )  # Success line
+
         self.image_label.setPixmap(
             pixmap.scaledToHeight(200, Qt.TransformationMode.SmoothTransformation)
         )
@@ -407,24 +389,14 @@ class PartWidget(QWidget):
         pixmap = QPixmap(self.image_path).scaledToHeight(
             200, Qt.TransformationMode.SmoothTransformation
         )
-        self.image_label.setPixmap(pixmap)
-
-    def resize_part(self):
-        # Dynamically adjust the size of the widget
-        w = self._parent.scroll.viewport().width()
-        self.setFixedSize(w - 20, 250)  # Ensure a consistent width with padding
-        pixmap = QPixmap(self.image_path).scaledToHeight(
-            200, Qt.TransformationMode.SmoothTransformation
-        )
-        self.image_label.setPixmap(pixmap)
-
-    def resize_part(self):
-        # Dynamically adjust the size of the widget
-        w = self._parent.scroll.viewport().width()
-        self.setFixedSize(w - 20, 250)  # Ensure a consistent width with padding
-        pixmap = QPixmap(self.image_path).scaledToHeight(
-            200, Qt.TransformationMode.SmoothTransformation
-        )
+        if pixmap.isNull():
+            print(
+                f"[ERROR] Failed to reload image at path: {self.image_path}"
+            )  # Error line
+        else:
+            print(
+                f"[DEBUG] Resizing and setting image: {self.image_path}"
+            )  # Success line
         self.image_label.setPixmap(pixmap)
 
 
@@ -479,10 +451,11 @@ class RightSide(QWidget):
         self.clear_results()
         self.part_widgets = []
         for part in parts:
-            part_number, part_size, mod_ind, fuelType = part
-            part_widget = PartWidget(
-                part_number, part_size, mod_ind, fuelType, parent=self
-            )
+            (
+                part_number,
+                part_size,
+            ) = part
+            part_widget = PartWidget(part_number, part_size, parent=self)
             self.layout.addWidget(part_widget, alignment=Qt.AlignTop | Qt.AlignLeft)
             self.part_widgets.append(part_widget)
 
@@ -508,7 +481,7 @@ class Window(QMainWindow):
     def resizeEvent(self, event):
         # Resizing logic for the LeftSide's logo
         self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.20)
-        pixmap = QPixmap(":logo.jpg")
+        pixmap = QPixmap(":title.jpg")
         pixmap = pixmap.copy(pixmap.rect().adjusted(10, 10, -10, -10))
         self.left_side.logolabel.setPixmap(
             pixmap.scaledToHeight(
