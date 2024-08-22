@@ -1,6 +1,6 @@
 <RCC>
 <qresource>
-    <file>boots-main-img.jpg</file>
-    <file>logo.jpg</file>
+    <file>main.JPG</file>
+    <file>title.jpg</file>
 </qresource>
 </RCC>

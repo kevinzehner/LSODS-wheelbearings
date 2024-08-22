@@ -143,7 +143,7 @@ class LeftSide(QWidget):
 
         self.bottom_image_label = QLabel()
         self.bottom_image_label.setPixmap(
-            QPixmap(":boots-main-img.jpg").scaledToHeight(
+            QPixmap(":main.JPG").scaledToHeight(
                 300, Qt.TransformationMode.SmoothTransformation
             )
         )
