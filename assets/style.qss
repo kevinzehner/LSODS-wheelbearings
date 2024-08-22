@@ -16,7 +16,7 @@ QWidget {
 
 QWidget.combos {
     background-color:  #233074;
-    color: white;;
+    color: white;
     border-radius: 4px;
 }
 
@@ -60,9 +60,8 @@ QWidget.ComboWidget QComboBox {
 QComboBox QAbstractItemView {
     background-color: #F0F0F0;  /* Background color of the dropdown list */
     color: #000000;  /* Text color of the dropdown list */
-    selection-background-color: #233074;
-    color: white;;  /* Background color of selected item */
-    selection-color: #FFFFFF;  /* Text color of selected item */
+    selection-background-color: #233074;  /* Dark blue background for selected item */
+    selection-color: #FFFFFF;  /* White text color of selected item */
 }
 
 QComboBox QAbstractItemView::item {
@@ -70,9 +69,8 @@ QComboBox QAbstractItemView::item {
 }
 
 QComboBox QAbstractItemView::item:hover {
-    background-color: #233074;
-    color: white;;  /* Background color when hovered */
-    color: #FFFFFF;  /* Text color when hovered */
+    background-color: #233074;  /* Dark blue background when hovered */
+    color: #FFFFFF;  /* White text color when hovered */
 }
 
 /* PartWidget styling */
@@ -86,7 +84,7 @@ QWidget.PartWidget {
 QWidget.PartWidget QLabel {
     background-color: transparent;
     color: #000;  /* Black text */
-    font-size: 20px;  /* Bigger font size for Part Number and Fuel Type */
+    font-size: 20px;  /* Bigger font size */
     padding: 10px;
     border-radius: 10px;  /* Rounded corners */
     text-align: center;  /* Center align text */
@@ -99,7 +97,7 @@ QWidget.PartWidget QLabel {
 
 /* QPushButton styling */
 QPushButton {
-    background-color: #850000;  /* Red background */
+    background-color: #233074;  /* Dark blue background */
     color: #FFFFFF;  /* White text */
     border: 1px solid #BDC3C7;  /* Light gray border */
     border-radius: 8px;
@@ -110,27 +108,26 @@ QPushButton {
 }
 
 QPushButton:hover {
-    background-color: #C0392B;  /* Darker red background on hover */
+    background-color: #1E2D5E;  /* Darker blue background on hover */
     border: 1px solid #BDC3C7;  /* Ensure the border is still visible on hover */
 }
 
 /* QScrollArea styling */
 QScrollArea {
     border: none;
-    background-color: #233074;
-    color: white;;  /* Red background */
+    background-color: #233074;  /* Dark blue background */
+    color: white;
     border-radius: 8px;
 }
 
 QScrollArea > QWidget {
-    background-color: #233074;
-    color: white;C;  /* Red background for inner widgets */
-    color: #000000;  /* Ensure text color is black for inner widgets */
+    background-color: #233074;  /* Dark blue background for inner widgets */
+    color: white;
 }
 
 QScrollArea > QWidget > QWidget {
-    background-color: #C0392B;  /* Red background for inner widgets */
-    color: #000000;  /* Ensure text color is black for inner widgets */
+    background-color: #1E2D5E;  /* Darker blue background for inner widgets */
+    color: #000000;  /* Black text */
 }
 
 /* Specific widget types within QScrollArea */
@@ -147,7 +144,7 @@ QScrollArea QWidget {
 }
 
 QScrollArea QPushButton {
-    background-color: #E74C3C;  /* Red background for buttons within QScrollArea */
+    background-color: #233074;  /* Dark blue background for buttons within QScrollArea */
     color: #FFFFFF;  /* White text */
 }
 
@@ -183,7 +180,7 @@ QLabel#resultCardImage {
 /* QScrollBar styling */
 QScrollBar:vertical {
     border: none;
-    background: #E74C3C; /* Red background for scrollbar track */
+    background: #233074; /* Dark blue background for scrollbar track */
     width: 14px; /* Adjust the width of the scrollbar */
     margin: 15px 3px 15px 3px;
 }
@@ -209,7 +206,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
 /* Adjust horizontal scrollbar as well if needed */
 QScrollBar:horizontal {
     border: none;
-    background: #E74C3C; /* Red background for scrollbar track */
+    background: #233074; /* Dark blue background for scrollbar track */
     height: 14px; /* Adjust the height of the scrollbar */
     margin: 3px 15px 3px 15px;
 }
