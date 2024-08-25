@@ -94,7 +94,7 @@ class LeftSide(QWidget):
         self.logolabel = QLabel()
         self.logolabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.logolabel.setPixmap(
-            QPixmap(":title.jpg").scaledToHeight(
+            QPixmap(":new-logo.PNG").scaledToHeight(
                 120, Qt.TransformationMode.SmoothTransformation
             )
         )
@@ -481,9 +481,9 @@ class Window(QMainWindow):
         # Resizing logic for the LeftSide's logo
         self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.20)
         self.left_side.logolabel.setPixmap(
-            QPixmap(":title.jpg").scaled(
+            QPixmap(":new-logo.PNG").scaled(
                 self.left_side.width(),
-                self.left_side.height() * 0.15,
+                self.left_side.height() * 0.2,
                 Qt.AspectRatioMode.KeepAspectRatio,
                 Qt.TransformationMode.SmoothTransformation,
             )
