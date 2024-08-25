@@ -84,11 +84,10 @@ class LeftSide(QWidget):
         layout = QVBoxLayout(content_widget)
 
         self.footer = QLabel(
-            "Li Juan\n"
-            "0086-576-87567389\n"
-            "317959560@qq.com\n"
-            "Taizhou Kali Rubber and Plastic Products CO.,LTD\n"
-            "Building 48, Donghai Zhicheng, Kanmen, Yuhauan, Zhei Jiang, China"
+            "+86-19584855673\n"
+            "autoparts@lsods.com\n"
+            "No. 313-319, Building 18, Kailong,\n"
+            "nternational Auto Parts City, Baiyun District, Guangzhou"
         )
         self.footer.setProperty("class", "footer")
 
@@ -96,7 +95,7 @@ class LeftSide(QWidget):
         self.logolabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.logolabel.setPixmap(
             QPixmap(":title.jpg").scaledToHeight(
-                150, Qt.TransformationMode.SmoothTransformation
+                120, Qt.TransformationMode.SmoothTransformation
             )
         )
         self.logolabel.setProperty("class", "Logo")
@@ -481,11 +480,11 @@ class Window(QMainWindow):
     def resizeEvent(self, event):
         # Resizing logic for the LeftSide's logo
         self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.20)
-        pixmap = QPixmap(":title.jpg")
-        pixmap = pixmap.copy(pixmap.rect().adjusted(10, 10, -10, -10))
         self.left_side.logolabel.setPixmap(
-            pixmap.scaledToHeight(
-                self.left_side.height() * 0.20,
+            QPixmap(":title.jpg").scaled(
+                self.left_side.width(),
+                self.left_side.height() * 0.15,
+                Qt.AspectRatioMode.KeepAspectRatio,
                 Qt.TransformationMode.SmoothTransformation,
             )
         )
