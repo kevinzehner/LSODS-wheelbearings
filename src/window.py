@@ -103,7 +103,7 @@ class LeftSide(QWidget):
         self.instructions_label = QLabel()
         self.instructions_label.setText(
             "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
-            "drive type, and position to search for CV Boots.</p></body></html>"
+            "drive type, and position to search for wheel bearings.</p></body></html>"
         )
         self.instructions_label.setProperty("class", "Instructions")
         self.instructions_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
