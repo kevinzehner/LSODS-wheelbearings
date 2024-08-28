@@ -8,14 +8,12 @@ from PySide6.QtCore import *
 
 from src import images
 
-
 if hasattr(sys, "frozen"):
     PARENT = Path(sys.executable).parent
     APPDIR = Path(__file__).parent.parent
 else:
     PARENT = Path(__file__).parent.parent
     APPDIR = PARENT
-
 
 ASSETS = APPDIR / "assets"
 DB_PATH = APPDIR / "wheelbearings_LSODS.db"  # Updated to the new database
@@ -87,7 +85,7 @@ class LeftSide(QWidget):
             "+86-19584855673\n"
             "autoparts@lsods.com\n"
             "No. 313-319, Building 18, Kailong,\n"
-            "nternational Auto Parts City, Baiyun District, Guangzhou"
+            "International Auto Parts City, Baiyun District, Guangzhou"
         )
         self.footer.setProperty("class", "footer")
 
@@ -411,7 +409,7 @@ class RightSide(QWidget):
         self.scroll = QScrollArea()
         self.scroll.setWidget(QWidget())
         self.scroll.setWidgetResizable(True)
-        self.scroll.setMinimumWidth(550)
+        self.scroll.setMinimumWidth(300)
         self.scroll.widget().setFixedWidth(self.scroll.viewport().width())
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         layout.addWidget(self.scroll)
@@ -469,11 +467,29 @@ class Window(QMainWindow):
         super().__init__()
         self.central = QWidget()
         self.setCentralWidget(self.central)
+
         self.hlayout = QHBoxLayout(self.central)
+
         self.left_side = LeftSide()
         self.right_side = RightSide()
-        self.hlayout.addWidget(self.left_side)
-        self.hlayout.addWidget(self.right_side)
+
+        # Set size policies for left and right sides
+        self.left_side.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.right_side.setSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.Preferred
+        )
+
+        # Add widgets to layout with stretch factors
+        # Set the left side to take up more space (e.g., 2 times as much)
+        self.hlayout.addWidget(self.left_side, 2)  # Left side with stretch factor 2
+        self.hlayout.addWidget(self.right_side, 1)  # Right side with stretch factor 1
+
+        # Adjust spacing and margins to reduce whitespace
+        self.hlayout.setSpacing(
+            0
+        )  # Reduce the spacing between the left and right sides
+        self.hlayout.setContentsMargins(0, 0, 0, 0)  # Remove margins around the layout
+
         self.left_side.displayResults.connect(self.right_side.display_results)
         self.left_side.clearResults.connect(self.right_side.clear_results)
 
@@ -483,7 +499,7 @@ class Window(QMainWindow):
         self.left_side.logolabel.setPixmap(
             QPixmap(":new-logo.PNG").scaled(
                 self.left_side.width(),
-                self.left_side.height() * 0.2,
+                self.left_side.height() * 0.1,
                 Qt.AspectRatioMode.KeepAspectRatio,
                 Qt.TransformationMode.SmoothTransformation,
             )
