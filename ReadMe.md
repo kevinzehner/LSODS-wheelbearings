@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a CV Boots Catalogue Application developed using Python and PyQt5. The application is designed to aid a company during an exhibition in Germany. It allows staff to confirm the availability of parts based on specific vehicle data provided by customers. The application uses a series of dropdowns to filter available parts and displays relevant information in an organized manner.
+This project is a Wheelbearing Catalogue Application developed using Python and Pyside. The application is designed to aid a company during an exhibition in Germany. It allows staff to confirm the availability of parts based on specific vehicle data provided by customers. The application uses a series of dropdowns to filter available parts and displays relevant information in an organized manner.
 
 ## Features
 
