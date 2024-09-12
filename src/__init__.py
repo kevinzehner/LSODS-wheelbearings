@@ -5,14 +5,11 @@ from src.window import Window, DB_PATH, ASSETS
 
 
 def execute():
-    # Create indexes (if they don't exist)
 
     create_indexes(DB_PATH)
 
-    # Start the application
     app = QApplication(sys.argv)
 
-    # Apply the stylesheet
     try:
         with open(ASSETS / "style.qss", "r") as style_file:
             app.setStyleSheet(style_file.read())

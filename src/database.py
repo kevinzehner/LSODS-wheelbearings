@@ -1,25 +1,5 @@
 import sqlite3
 
-# This script provides functions to interact with an SQLite database of boot parts.
-# Each function retrieves distinct values from the database based on various criteria
-# such as manufacturer, model, engine size, mark series, drive type, position, and transmission.
-
-# Function List:
-# - get_unique_manufacturers(db_path): Retrieves a list of unique manufacturers.
-# - get_models(db_path, manufacturer): Retrieves a list of models for a given manufacturer.
-# - get_engine_sizes(db_path, manufacturer, model): Retrieves a list of engine sizes for a given manufacturer and model.
-# - get_mark_series(db_path, manufacturer, model, engine_size): Retrieves a list of mark series for a given manufacturer, model, and engine size.
-# - get_drive_types(db_path, manufacturer, model, engine_size, mark_series): Retrieves a list of drive types for a given manufacturer, model, engine size, and mark series.
-# - get_positions(db_path, manufacturer, model, engine_size, mark_series, drive_type): Retrieves a list of positions for a given manufacturer, model, engine size, mark series, and drive type.
-# - get_transmissions(db_path, manufacturer, model, engine_size, mark_series, drive_type, position): Retrieves a list of transmissions for a given manufacturer, model, engine size, mark series, drive type, and position.
-# - get_parts(db_path, criteria): Retrieves a list of parts based on multiple criteria.
-
-# Note:
-# The `get_unique_manufacturers` function is called from `ui_components.py` to populate the manufacturer dropdown.
-# The other functions are called from `ui_logic.py` to populate subsequent dropdowns based on user selections.
-
-
-import sqlite3
 
 
 def get_unique_manufacturers(db_path):

@@ -16,7 +16,7 @@ else:
     APPDIR = PARENT
 
 ASSETS = APPDIR / "assets"
-DB_PATH = APPDIR / "wheelbearings_LSODS.db"  # Updated to the new database
+DB_PATH = APPDIR / "wheelbearings_LSODS.db"
 
 
 class ComboWidget(QWidget):
@@ -63,22 +63,17 @@ class LeftSide(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
-        # Create the main layout for LeftSide
         scroll_area_layout = QVBoxLayout(self)
 
-        # Create a QScrollArea
         self.scroll_area = QScrollArea(self)
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setMinimumWidth(800)  # Adjust the width here
+        self.scroll_area.setMinimumWidth(800)
 
-        # Create a QWidget to act as the container for the content
         content_widget = QWidget()
         self.scroll_area.setWidget(content_widget)
 
-        # Add the scroll area to the main layout
         scroll_area_layout.addWidget(self.scroll_area)
 
-        # Create the layout for the content inside the scroll area
         layout = QVBoxLayout(content_widget)
 
         self.footer = QLabel(
@@ -315,24 +310,20 @@ class PartWidget(QWidget):
         self._parent = parent
         part_layout = QHBoxLayout(self)
 
-        # Layout for text labels
         label_layout = QVBoxLayout()
         label_layout.setAlignment(Qt.AlignCenter)
 
-        # Part Number
         part_number_label = QLabel(f"<b>{part_number}</b>")
         part_number_label.setAlignment(Qt.AlignCenter)
         part_number_label.setStyleSheet("font-size: 20px; padding: 5px;")
         label_layout.addWidget(part_number_label)
 
-        # Part Size
         part_size_label = QLabel(part_size)
         part_size_label.setAlignment(Qt.AlignCenter)
         part_size_label.setStyleSheet("padding: 5px;")
         part_size_label.setWordWrap(True)
         label_layout.addWidget(part_size_label)
 
-        # Tech Note 1
         tech_note_1_label = QLabel(
             f"Tech Note 1: {tech_note_1 if tech_note_1 else 'N/A'}"
         )
@@ -341,7 +332,6 @@ class PartWidget(QWidget):
         tech_note_1_label.setWordWrap(True)
         label_layout.addWidget(tech_note_1_label)
 
-        # Tech Note 2
         tech_note_2_label = QLabel(
             f"Tech Note 2: {tech_note_2 if tech_note_2 else 'N/A'}"
         )
@@ -353,7 +343,6 @@ class PartWidget(QWidget):
         label_layout.addStretch(1)
         part_layout.addLayout(label_layout)
 
-        # Image handling
         self.image_label = QLabel()
         if part_number:
             self.image_path = str(
@@ -371,36 +360,27 @@ class PartWidget(QWidget):
         )
         part_layout.addWidget(self.image_label)
 
-        self.setMinimumHeight(
-            300
-        )  # Set a minimum height for the card to ensure uniform size
-        self.setFixedSize(
-            self._parent.scroll.viewport().width() - 20, 300
-        )  # Fixed size to keep all cards the same size
+        self.setMinimumHeight(300)
+        self.setFixedSize(self._parent.scroll.viewport().width() - 20, 300)
 
     def resize_part(self):
         w = self._parent.scroll.viewport().width()
-        self.setFixedSize(w - 20, 300)  # Ensure a consistent width with padding
+        self.setFixedSize(w - 20, 300)
         pixmap = QPixmap(self.image_path).scaledToHeight(
             200, Qt.TransformationMode.SmoothTransformation
         )
         self.image_label.setPixmap(pixmap)
 
     def resize_part(self):
-        # Dynamically adjust the size of the widget
         w = self._parent.scroll.viewport().width()
-        self.setFixedSize(w - 20, 250)  # Ensure a consistent width with padding
+        self.setFixedSize(w - 20, 250)
         pixmap = QPixmap(self.image_path).scaledToHeight(
             200, Qt.TransformationMode.SmoothTransformation
         )
         if pixmap.isNull():
-            print(
-                f"[ERROR] Failed to reload image at path: {self.image_path}"
-            )  # Error line
+            print(f"[ERROR] Failed to reload image at path: {self.image_path}")
         else:
-            print(
-                f"[DEBUG] Resizing and setting image: {self.image_path}"
-            )  # Success line
+            print(f"[DEBUG] Resizing and setting image: {self.image_path}")
         self.image_label.setPixmap(pixmap)
 
 
@@ -409,10 +389,8 @@ class RightSide(QWidget):
         super().__init__(parent=parent)
         self.setProperty("class", "RightSide")
 
-        # Main layout
         layout = QVBoxLayout(self)
 
-        # Scroll area setup
         self.scroll = QScrollArea()
         self.scroll.setWidget(QWidget())
         self.scroll.setWidgetResizable(True)
@@ -421,7 +399,6 @@ class RightSide(QWidget):
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         layout.addWidget(self.scroll)
 
-        # Initialize part_widgets list
         self.part_widgets = []
 
     def clear_results(self):
@@ -430,7 +407,6 @@ class RightSide(QWidget):
         widget = QWidget()
         widget.setFixedWidth(self.scroll.viewport().width())
 
-        # Use QVBoxLayout for a single-column layout
         self.layout = QVBoxLayout(widget)
         self.scroll.setWidget(widget)
         self.scroll.setWidgetResizable(True)
@@ -479,28 +455,22 @@ class Window(QMainWindow):
         self.left_side = LeftSide()
         self.right_side = RightSide()
 
-        # Set size policies for left and right sides
         self.left_side.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.right_side.setSizePolicy(
             QSizePolicy.MinimumExpanding, QSizePolicy.Preferred
         )
 
-        # Add widgets to layout with stretch factors
-        # Set the left side to take up more space (e.g., 2 times as much)
-        self.hlayout.addWidget(self.left_side, 2)  # Left side with stretch factor 2
-        self.hlayout.addWidget(self.right_side, 1)  # Right side with stretch factor 1
+        self.hlayout.addWidget(self.left_side, 2)
+        self.hlayout.addWidget(self.right_side, 1)
 
-        # Adjust spacing and margins to reduce whitespace
-        self.hlayout.setSpacing(
-            0
-        )  # Reduce the spacing between the left and right sides
-        self.hlayout.setContentsMargins(0, 0, 0, 0)  # Remove margins around the layout
+        self.hlayout.setSpacing(0)
+        self.hlayout.setContentsMargins(0, 0, 0, 0)
 
         self.left_side.displayResults.connect(self.right_side.display_results)
         self.left_side.clearResults.connect(self.right_side.clear_results)
 
     def resizeEvent(self, event):
-        # Resizing logic for the LeftSide's logo
+
         self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.1)
         self.left_side.logolabel.setPixmap(
             QPixmap(":new-logo.PNG").scaled(
