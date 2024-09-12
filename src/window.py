@@ -8,14 +8,12 @@ from PySide6.QtCore import *
 
 from src import images
 
-
 if hasattr(sys, "frozen"):
     PARENT = Path(sys.executable).parent
     APPDIR = Path(__file__).parent.parent
 else:
     PARENT = Path(__file__).parent.parent
     APPDIR = PARENT
-
 
 ASSETS = APPDIR / "assets"
 DB_PATH = APPDIR / "wheelbearings_LSODS.db"  # Updated to the new database
@@ -84,19 +82,18 @@ class LeftSide(QWidget):
         layout = QVBoxLayout(content_widget)
 
         self.footer = QLabel(
-            "Li Juan\n"
-            "0086-576-87567389\n"
-            "317959560@qq.com\n"
-            "Taizhou Kali Rubber and Plastic Products CO.,LTD\n"
-            "Building 48, Donghai Zhicheng, Kanmen, Yuhauan, Zhei Jiang, China"
+            "+86-19584855673\n"
+            "autoparts@lsods.com\n"
+            "No. 313-319, Building 18, Kailong,\n"
+            "International Auto Parts City, Baiyun District, Guangzhou"
         )
         self.footer.setProperty("class", "footer")
 
         self.logolabel = QLabel()
         self.logolabel.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.logolabel.setPixmap(
-            QPixmap(":title.jpg").scaledToHeight(
-                150, Qt.TransformationMode.SmoothTransformation
+            QPixmap(":new-logo.PNG").scaledToHeight(
+                120, Qt.TransformationMode.SmoothTransformation
             )
         )
         self.logolabel.setProperty("class", "Logo")
@@ -104,7 +101,7 @@ class LeftSide(QWidget):
         self.instructions_label = QLabel()
         self.instructions_label.setText(
             "<html><body><p>Please select the manufacturer, model, engine size, mark series,<br>"
-            "drive type, and position to search for CV Boots.</p></body></html>"
+            "drive type, and position to search for wheel bearings.</p></body></html>"
         )
         self.instructions_label.setProperty("class", "Instructions")
         self.instructions_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -311,7 +308,7 @@ class LeftSide(QWidget):
 
 
 class PartWidget(QWidget):
-    def __init__(self, part_number, part_size, parent=None):
+    def __init__(self, part_number, part_size, tech_note_1, tech_note_2, parent=None):
         super().__init__(parent=parent)
         self.setProperty("class", "PartWidget")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground)
@@ -320,56 +317,51 @@ class PartWidget(QWidget):
 
         # Layout for text labels
         label_layout = QVBoxLayout()
-        label_layout.setAlignment(Qt.AlignCenter)  # Center align the text vertically
+        label_layout.setAlignment(Qt.AlignCenter)
 
         # Part Number
         part_number_label = QLabel(f"<b>{part_number}</b>")
         part_number_label.setAlignment(Qt.AlignCenter)
-        part_number_label.setStyleSheet(
-            "font-size: 20px; margin-top:20px; padding: 5px;"
-        )
+        part_number_label.setStyleSheet("font-size: 20px; padding: 5px;")
         label_layout.addWidget(part_number_label)
 
         # Part Size
-        part_size_lines = part_size.split(" x ")
-        part_size_text = "\n".join(part_size_lines)
-        part_size_label = QLabel(part_size_text)
+        part_size_label = QLabel(part_size)
         part_size_label.setAlignment(Qt.AlignCenter)
         part_size_label.setStyleSheet("padding: 5px;")
         part_size_label.setWordWrap(True)
         label_layout.addWidget(part_size_label)
 
+        # Tech Note 1
+        tech_note_1_label = QLabel(
+            f"Tech Note 1: {tech_note_1 if tech_note_1 else 'N/A'}"
+        )
+        tech_note_1_label.setAlignment(Qt.AlignCenter)
+        tech_note_1_label.setStyleSheet("font-size: 14px; padding: 5px;")
+        tech_note_1_label.setWordWrap(True)
+        label_layout.addWidget(tech_note_1_label)
+
+        # Tech Note 2
+        tech_note_2_label = QLabel(
+            f"Tech Note 2: {tech_note_2 if tech_note_2 else 'N/A'}"
+        )
+        tech_note_2_label.setAlignment(Qt.AlignCenter)
+        tech_note_2_label.setStyleSheet("font-size: 14px; padding: 5px;")
+        tech_note_2_label.setWordWrap(True)
+        label_layout.addWidget(tech_note_2_label)
+
         label_layout.addStretch(1)
-        label_layout.setSpacing(2)
-        part_layout.addLayout(label_layout, stretch=1)  # Give more space to text layout
+        part_layout.addLayout(label_layout)
 
         # Image handling
         self.image_label = QLabel()
         if part_number:
-            # Construct the image path using part_number and .png extension
-            image_filename = f"{part_number}.png"
-            self.image_path = str(ASSETS / "wheelbearing_images_LSODS" / image_filename)
-            print(f"[DEBUG] Image path set to: {self.image_path}")  # Debugging line
-            print(
-                f"[DEBUG] Checking if file exists: {os.path.exists(self.image_path)}"
-            )  # Check existence
+            self.image_path = str(
+                ASSETS / "wheelbearing_images_LSODS" / f"{part_number}.png"
+            )
         else:
             self.image_path = ":title.jpg"
-            print(
-                f"[DEBUG] Default image path used: {self.image_path}"
-            )  # Debugging line
-
-        # Load the image and set it to the QLabel
         pixmap = QPixmap(self.image_path)
-        if pixmap.isNull():
-            print(
-                f"[ERROR] Failed to load image at path: {self.image_path}"
-            )  # Error line
-        else:
-            print(
-                f"[DEBUG] Successfully loaded image: {self.image_path}"
-            )  # Success line
-
         self.image_label.setPixmap(
             pixmap.scaledToHeight(200, Qt.TransformationMode.SmoothTransformation)
         )
@@ -377,10 +369,22 @@ class PartWidget(QWidget):
         self.image_label.mousePressEvent = (
             lambda event, path=self.image_path: self._parent.show_image_modal(path)
         )
-        part_layout.addWidget(
-            self.image_label, stretch=1
-        )  # Equal space for image layout
-        self.resize_part()
+        part_layout.addWidget(self.image_label)
+
+        self.setMinimumHeight(
+            300
+        )  # Set a minimum height for the card to ensure uniform size
+        self.setFixedSize(
+            self._parent.scroll.viewport().width() - 20, 300
+        )  # Fixed size to keep all cards the same size
+
+    def resize_part(self):
+        w = self._parent.scroll.viewport().width()
+        self.setFixedSize(w - 20, 300)  # Ensure a consistent width with padding
+        pixmap = QPixmap(self.image_path).scaledToHeight(
+            200, Qt.TransformationMode.SmoothTransformation
+        )
+        self.image_label.setPixmap(pixmap)
 
     def resize_part(self):
         # Dynamically adjust the size of the widget
@@ -412,7 +416,7 @@ class RightSide(QWidget):
         self.scroll = QScrollArea()
         self.scroll.setWidget(QWidget())
         self.scroll.setWidgetResizable(True)
-        self.scroll.setMinimumWidth(550)
+        self.scroll.setMinimumWidth(300)
         self.scroll.widget().setFixedWidth(self.scroll.viewport().width())
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         layout.addWidget(self.scroll)
@@ -451,11 +455,10 @@ class RightSide(QWidget):
         self.clear_results()
         self.part_widgets = []
         for part in parts:
-            (
-                part_number,
-                part_size,
-            ) = part
-            part_widget = PartWidget(part_number, part_size, parent=self)
+            part_number, part_size, tech_note_1, tech_note_2 = part
+            part_widget = PartWidget(
+                part_number, part_size, tech_note_1, tech_note_2, parent=self
+            )
             self.layout.addWidget(part_widget, alignment=Qt.AlignTop | Qt.AlignLeft)
             self.part_widgets.append(part_widget)
 
@@ -470,22 +473,40 @@ class Window(QMainWindow):
         super().__init__()
         self.central = QWidget()
         self.setCentralWidget(self.central)
+
         self.hlayout = QHBoxLayout(self.central)
+
         self.left_side = LeftSide()
         self.right_side = RightSide()
-        self.hlayout.addWidget(self.left_side)
-        self.hlayout.addWidget(self.right_side)
+
+        # Set size policies for left and right sides
+        self.left_side.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.right_side.setSizePolicy(
+            QSizePolicy.MinimumExpanding, QSizePolicy.Preferred
+        )
+
+        # Add widgets to layout with stretch factors
+        # Set the left side to take up more space (e.g., 2 times as much)
+        self.hlayout.addWidget(self.left_side, 2)  # Left side with stretch factor 2
+        self.hlayout.addWidget(self.right_side, 1)  # Right side with stretch factor 1
+
+        # Adjust spacing and margins to reduce whitespace
+        self.hlayout.setSpacing(
+            0
+        )  # Reduce the spacing between the left and right sides
+        self.hlayout.setContentsMargins(0, 0, 0, 0)  # Remove margins around the layout
+
         self.left_side.displayResults.connect(self.right_side.display_results)
         self.left_side.clearResults.connect(self.right_side.clear_results)
 
     def resizeEvent(self, event):
         # Resizing logic for the LeftSide's logo
-        self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.20)
-        pixmap = QPixmap(":title.jpg")
-        pixmap = pixmap.copy(pixmap.rect().adjusted(10, 10, -10, -10))
+        self.left_side.logolabel.setFixedHeight(self.left_side.height() * 0.1)
         self.left_side.logolabel.setPixmap(
-            pixmap.scaledToHeight(
-                self.left_side.height() * 0.20,
+            QPixmap(":new-logo.PNG").scaled(
+                self.left_side.width(),
+                self.left_side.height() * 0.1,
+                Qt.AspectRatioMode.KeepAspectRatio,
                 Qt.TransformationMode.SmoothTransformation,
             )
         )
